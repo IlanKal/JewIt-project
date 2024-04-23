@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JewIt Website</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+  </head>
+  <body>
+    <%- include("partials/header.ejs") %>
+
+    <div class="body">
+      <div class="opennig">
+        <h1>Welcome To JewIt</h1>
+        <p>
+          Explore Judaism, one of the oldest religions in history. Here, you'll
+          discover <br />
+          information and explanations to enhance your understanding. <br />
+          Let's dive in!
+        </p>
+      </div>
+
+      <div class="Birthday-Converter">
+        <h1>Birthday Converter</h1>
+        <p>
+          Would you like to determine your Jewish birthdate according to the
+          Jewish calendar? <br />
+          Please input your date of birth, and the information will be displayed
+          for you."
+        </p>
+        <form action="/convert" method="post">
+          <label for="date">My birthday date is: </label>
+          <input type="text" id="date" name="date" required data-input />
+          <br />
+          <button type="submit">Convert</button>
+        </form>
+
+        <% if(locals.convertedDate){ %>
+        <h1><%= convertedDate %></h1>
+        <p>Discover interesting events that occurred on your specific date</p>
+        <% eventsOnDate.forEach(list =>{ %>
+        <li><%= list %></li>
+        <% }); %> <% } %>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+      <script>
+        flatpickr("#date", {
+          dateFormat: "Y-m-d",
+        });
+      </script>
+
+      <div id="hebcal-shabbat"></div>
+      <div class="shabat-times">
+        <script>
+          fetch(
+            "https://www.hebcal.com/shabbat?cfg=i2&geonameid=281184&M=on&lg=s&tgt=_top"
+          )
+            .then((response) => response.text())
+            .then(
+              (data) =>
+                (document.getElementById("hebcal-shabbat").innerHTML = data)
+            );
+        </script>
+      </div>
+      <br />
+
+      <div class="translating">
+        <h1>Time to learn Hebrew</h1>
+        <p>Learn the Hebrew language by translating anything you desire</p>
+
+        <form action="/translate" method="post">
+          <br />
+          <textarea
+            id="userInput"
+            name="userInput"
+            placeholder="Please enter your text"
+            required
+            rows="4"
+            cols="50"
+          ></textarea>
+          <br />
+          <button type="submit">Submit</button>
+        </form>
+        <br />
+
+        <% if(locals.data){ %>
+        <p><%= data %></p>
+        <% } %>
+      </div>
+    </div>
+
+    <%- include("partials/footer.ejs") %>
+  </body>
+</html>

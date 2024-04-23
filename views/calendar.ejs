@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jewish Calendar</title>
+    <link href="hebcal-styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <%- include("partials/header.ejs") %>
+
+    <div id="calendar"></div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"
+      integrity="sha384-wv6yRjQC0TqzEnAjFQVXM2V0JrF6Nk0dh6QAGf1RwzTqPArdwU3luBZjVCi2YSVH"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var calendarEl = document.getElementById("calendar");
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: "dayGridMonth",
+          headerToolbar: {
+            left: "title",
+            right: "prev,next today",
+          },
+          eventDisplay: "block",
+          events: {
+            url: "https://www.hebcal.com/hebcal?cfg=fc&v=1&i=off&maj=on&min=on&nx=on&mf=on&ss=on&mod=on&lg=s&s=on",
+            cache: true,
+          },
+        });
+        calendar.render();
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowLeft" && !e.metaKey) {
+            calendar.prev();
+          } else if (e.key === "ArrowRight" && !e.metaKey) {
+            calendar.next();
+          }
+        });
+      });
+    </script>
+    <%- include("partials/footer.ejs") %>
+  </body>
+</html>
